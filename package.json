@@ -2,9 +2,11 @@
   "name": "babel-plugin-react-transform-attr-expression",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf lib && mkdir lib && babel src --out-dir lib",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "react",
@@ -12,5 +14,9 @@
     "expression"
   ],
   "author": "The_thing",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0"
+  }
 }
