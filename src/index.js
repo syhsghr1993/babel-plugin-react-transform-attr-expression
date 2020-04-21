@@ -28,10 +28,13 @@ export default function({ types: t, template }) {
               const attrIndex = [];
               path2.node.openingElement.attributes.forEach((item, index) => {
                 if (
-                  properties.includes(item.name.name) ||
-                  properties.some(
-                    property => property instanceof RegExp && property.test(item.name.name)
-                  )
+                  t.isJSXAttribute(item) &&
+                  (properties.includes(item.name.name) ||
+                    properties.some(
+                      property =>
+                        property instanceof RegExp &&
+                        property.test(item.name.name)
+                    ))
                 ) {
                   attrIndex.push(index);
                 }
@@ -60,7 +63,9 @@ export default function({ types: t, template }) {
 
                 // 删除标记 删除后attributes长度会-1
                 attrIndex.reduce((total, item) => {
-                  path2.get(`openingElement.attributes.${item - total}`).remove();
+                  path2
+                    .get(`openingElement.attributes.${item - total}`)
+                    .remove();
                   return total + 1;
                 }, 0);
 
@@ -73,7 +78,7 @@ export default function({ types: t, template }) {
                 }
 
                 // 创建新ast树模板
-                const preOperationAST = template('{ EXPR && ARGS }');
+                const preOperationAST = template("{ EXPR && ARGS }");
 
                 // 替换源 <div data-permession={flag}>test</div>
                 // 替换结果 { flag && <div>test</div> }
@@ -85,14 +90,14 @@ export default function({ types: t, template }) {
                       path2.node.closingElement,
                       path2.node.children,
                       false
-                    ),
+                    )
                   })
                 );
               }
             }
-          },
+          }
         });
-      },
-    },
+      }
+    }
   };
 }
